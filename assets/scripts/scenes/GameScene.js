@@ -8,36 +8,37 @@ class GameScene extends Phaser.Scene {
         this.k = 2;
         this.values = ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'];
         this.createBackground();
-        this.createCircles();
-    }
+        this.createRectangles();
+        this.createText();
+    };
 
     createBackground() {
         this.bg = this.add.sprite(0, 0, 'bg').setOrigin(0);
     };
 
-    createCircles() {
-        this.createOneCircle(config.width / 2 - 100, config.height / 2 - 100);
-        this.createOneCircle(config.width / 2, config.height / 2 - 100);
-        this.createOneCircle(config.width / 2 + 100, config.height / 2 - 100);
+    createRectangles() {
+        this.createOneRectangle(config.width / 2 - 100, config.height / 2 - 100);
+        this.createOneRectangle(config.width / 2, config.height / 2 - 100);
+        this.createOneRectangle(config.width / 2 + 100, config.height / 2 - 100);
 
-        this.createOneCircle(config.width / 2 - 100, config.height / 2);
-        this.createOneCircle(config.width / 2, config.height / 2);
-        this.createOneCircle(config.width / 2 + 100, config.height / 2);
+        this.createOneRectangle(config.width / 2 - 100, config.height / 2);
+        this.createOneRectangle(config.width / 2, config.height / 2);
+        this.createOneRectangle(config.width / 2 + 100, config.height / 2);
 
-        this.createOneCircle(config.width / 2 - 100, config.height / 2 + 100);
-        this.createOneCircle(config.width / 2, config.height / 2 + 100);
-        this.createOneCircle(config.width / 2 + 100, config.height / 2 + 100);
-        this.input.on('gameobjectup', (pointer, gameObject) =>
+        this.createOneRectangle(config.width / 2 - 100, config.height / 2 + 100);
+        this.createOneRectangle(config.width / 2, config.height / 2 + 100);
+        this.createOneRectangle(config.width / 2 + 100, config.height / 2 + 100);
+        this.input.on('gameobjectdown', (pointer, gameObject) =>
         {
-            gameObject.emit('gameobjectup', gameObject)
+            gameObject.emit('gameobjectdown', gameObject);
         });
-    }
+    };
 
-    createOneCircle(x, y) {
-        this.regtangle = this.add.sprite(x, y, 'rg').setOrigin(0.5);
-        this.regtangle.setInteractive();
-        this.regtangle.on('gameobjectup', this.clickHandler, this);
-        this.regtangle.id = this.id;
+    createOneRectangle(x, y) {
+        this.rectangle = this.add.sprite(x, y, 'rс').setOrigin(0.5);
+        this.rectangle.setInteractive();
+        this.rectangle.on('gameobjectdown', this.clickHandler, this);
+        this.rectangle.id = this.id;
         this.id++;
     };
 
@@ -47,12 +48,14 @@ class GameScene extends Phaser.Scene {
             this.values[gameObject.id] = 'X';
             this.crest = this.add.sprite(gameObject.x,gameObject.y ,'crest').setOrigin(0.5);
             this.k++;
+            this.text.setText('choice: CIRCLE');
             this.checkWin('CREST');
         }
         else {
             this.values[gameObject.id] = 'O';
             this.circle = this.add.sprite(gameObject.x,gameObject.y ,'circle').setOrigin(0.5);
             this.k++;
+            this.text.setText('choice: CREST');
             this.checkWin('CIRCLE');
         }
     };
@@ -67,17 +70,44 @@ class GameScene extends Phaser.Scene {
             this.values[0] === this.values[4] && this.values[0] === this.values[8] && this.values[0] !== 'N' ||
             this.values[2] === this.values[4] && this.values[2] === this.values[6] && this.values[2] !== 'N'
         ) {
-            console.log(`${player} WIN!`);
-            this.input.off('gameobjectup');
+             this.add.text(600, 75, `${player} WIN!`, {
+                font: '60px Boby',
+                fill: '#FFFFFF'
+            }).setOrigin(0.5);
+            this.input.off('gameobjectdown');
+
+            this.text.setText('');
+
+            this.add.text(600, 520, 'Tap to restart', {
+                font: '60px Boby',
+                fill: '#FFFFFF'
+            }).setOrigin(0.5);
+
         } else if(!this.values.find((el) => el === "N" )){
-            console.log('Draw!');
-            this.input.off('gameobjectup');
+
+            this.add.text(600, 525, 'DROW!', {
+                font: '60px Boby',
+                fill: '#FFFFFF'
+            }).setOrigin(0.5);
+
+            this.input.off('gameobjectdown');
+
+            this.text.setText('');
+
+            this.add.text(600, 520, 'Tap to restart', {
+                font: '60px Boby',
+                fill: '#FFFFFF'
+            }).setOrigin(0.5);
         }
-    }
-
-
-    update() {
     };
+
+    createText() {
+         this.text = this.add.text(700, 20, 'choice: CREST', {
+            font: '40px Boby',
+            fill: '#FFFFFF'
+        });
+    };
+
 }
 
 
