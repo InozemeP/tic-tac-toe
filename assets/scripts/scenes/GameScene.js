@@ -4,13 +4,15 @@ class GameScene extends Phaser.Scene {
     };
 
     create() {
+        this.flag = false;
         this.id = 0;
-        this.k = 2;
+        this.count = 1;
+        this.random();
         this.values = ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'];
         this.createBackground();
         this.createRectangles();
-        this.createText();
-        this.createChoiceImage();
+        // this.createText();
+        // this.createChoiceImage();
     };
 
     createBackground() {
@@ -43,49 +45,121 @@ class GameScene extends Phaser.Scene {
         this.id++;
     };
 
+
     clickHandler(gameObject) {
         if (this.values[gameObject.id] !== 'N') {
             return;
         }
 
-        if (this.k % 2 === 0)  {
-            this.values[gameObject.id] = 'X';
-            this.crest = this.add.sprite(gameObject.x,gameObject.y ,'crest').setOrigin(0.5);
-            this.k++;
-            this.choiceCircle.visible = true;
-            this.choiceCrest.visible = false;
-            this.checkWin('CREST');
-        }
-        else {
-            this.values[gameObject.id] = 'O';
-            this.circle = this.add.sprite(gameObject.x,gameObject.y ,'circle').setOrigin(0.5);
-            this.k++;
-            this.choiceCircle.visible = false;
-            this.choiceCrest.visible = true;
-            this.checkWin('CIRCLE');
+        this.values[gameObject.id] = 'X';
+        this.crest = this.add.sprite(gameObject.x,gameObject.y ,'crest').setOrigin(0.5);
+        this.checkWin('CREST');
+        if(!this.flag) {
+            this.botMove();
+            this.count++;
         }
     };
+
+    botMove() {
+        if(this.count === 1){
+            if (this.values[4] === 'N') {
+                this.values[4] = 'O';
+                this.add.sprite(this.children.list[5].x, this.children.list[5].y, 'circle').setOrigin(0.5);
+            }
+            else if(this.values[this.k] === 'N') {
+                this.values[this.k] = 'O';
+                this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
+            }
+        }
+        else {
+            // console.log(this.tryZero() + 'zero')
+            //
+             console.log(this.stopCrest() + 'crest')
+            if (this.tryZero() !== -1) {
+                this.k = this.tryZero();
+                this.values[this.k] = '0';
+                this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
+            } else if(this.stopCrest() !== -1){
+
+                this.k = this.stopCrest();
+                this.values[this.k] = '0';
+                this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
+            } else {
+
+            }
+
+
+        }
+    }
+
+    getRandomPosition() {
+        for(let i = 0; i < this.values.length; i++) {
+            if(this.values[i] === 'N') {
+                return i;
+            }
+        }
+    }
+
+    stopCrest() {
+        for(let i = 0; i < this.values.length; i++) {
+            if(this.values[i] === 'N') {
+                this.values[i] = 'X';
+                console.log(this.checkWinBefore())
+                if(this.checkWinBefore()){
+                    this.values[i] = 'N'
+                    return i;
+                } else{
+                    this.values[i] = 'N'
+                }
+            }
+        }
+        return -1;
+    }
+
+    tryZero() {
+        for(let i = 0; i < this.values.length; i++) {
+            if(this.values[i] === 'N') {
+                this.values[i] = 'O';
+                if(this.checkWinBefore()){
+                    this.values[i] = 'N'
+                    return i;
+                } else{
+                    this.values[i] = 'N'
+                }
+            }
+        }
+        return -1;
+    }
+
+    checkWinBefore() {
+        return (this.values[0] === this.values[1] && this.values[0] === this.values[2] && this.values[0] !== 'N' ||
+            this.values[3] === this.values[4] && this.values[3] === this.values[5] && this.values[3] !== 'N' ||
+            this.values[6] === this.values[7] && this.values[6] === this.values[8] && this.values[6] !== 'N' ||
+            this.values[0] === this.values[3] && this.values[0] === this.values[6] && this.values[0] !== 'N' ||
+            this.values[1] === this.values[4] && this.values[1] === this.values[7] && this.values[1] !== 'N' ||
+            this.values[2] === this.values[5] && this.values[2] === this.values[8] && this.values[2] !== 'N' ||
+            this.values[0] === this.values[4] && this.values[0] === this.values[8] && this.values[0] !== 'N' ||
+            this.values[2] === this.values[4] && this.values[2] === this.values[6] && this.values[2] !== 'N')
+    }
 
     checkWin(player) {
         if(
             this.values[0] === this.values[1] && this.values[0] === this.values[2] && this.values[0] !== 'N' ||
             this.values[3] === this.values[4] && this.values[3] === this.values[5] && this.values[3] !== 'N' ||
-            this.values[6] === this.values[7] && this.values[6] === this.values[9] && this.values[6] !== 'N' ||
+            this.values[6] === this.values[7] && this.values[6] === this.values[8] && this.values[6] !== 'N' ||
             this.values[0] === this.values[3] && this.values[0] === this.values[6] && this.values[0] !== 'N' ||
             this.values[1] === this.values[4] && this.values[1] === this.values[7] && this.values[1] !== 'N' ||
             this.values[2] === this.values[5] && this.values[2] === this.values[8] && this.values[2] !== 'N' ||
             this.values[0] === this.values[4] && this.values[0] === this.values[8] && this.values[0] !== 'N' ||
             this.values[2] === this.values[4] && this.values[2] === this.values[6] && this.values[2] !== 'N'
         ) {
-             this.add.text(600, 75, `${player} WIN!`, {
+            this.flag = true;
+            this.add.text(600, 75, `${player} WIN!`, {
                 font: '60px Boby',
                 fill: '#FFFFFF'
             }).setOrigin(0.5);
             this.input.off('gameobjectdown');
 
-            this.text.setText('');
-            this.choiceCrest.visible = false;
-            this.choiceCircle.visible = false;
 
             this.add.text(600, 520, 'Tap to restart', {
                 font: '60px Boby',
@@ -93,8 +167,9 @@ class GameScene extends Phaser.Scene {
             }).setOrigin(0.5);
 
             this.setRestart();
-        } else if(!this.values.find((el) => el === "N" )) {
 
+        } else if(!this.values.find((el) => el === "N" )) {
+            this.flag = true;
             this.add.text(600, 525, 'DROW!', {
                 font: '60px Boby',
                 fill: '#FFFFFF'
@@ -102,10 +177,6 @@ class GameScene extends Phaser.Scene {
 
             this.input.off('gameobjectdown');
 
-            this.text.setText('');
-            this.choiceCrest.visible = false;
-            this.choiceCircle.visible = false;
-
             this.add.text(600, 520, 'Tap to restart', {
                 font: '60px Boby',
                 fill: '#FFFFFF'
@@ -115,12 +186,6 @@ class GameScene extends Phaser.Scene {
         }
     };
 
-    createText() {
-         this.text = this.add.text(700, 30, 'choice:', {
-            font: '40px Boby',
-            fill: '#FFFFFF'
-        });
-    };
 
     setRestart() {
         this.time.delayedCall(0, () => {
@@ -130,11 +195,29 @@ class GameScene extends Phaser.Scene {
         });
     };
 
-    createChoiceImage() {
-        this.choiceCrest = this.add.sprite(1000, 0, 'crest').setOrigin(0);
-        this.choiceCircle = this.add.sprite(1008, 7, 'circle').setOrigin(0);
-        this.choiceCircle.visible = false;
-    };
+     random() {
+         this.k = Phaser.Math.Between(0, 8)
+          if(this.k === 4) {
+              this.random();
+          }
+          else {
+              return this.k;
+          }
+     }
+
+    // createChoiceImage() {
+    //     this.choiceCrest = this.add.sprite(1000, 0, 'crest').setOrigin(0);
+    //     this.choiceCircle = this.add.sprite(1008, 7, 'circle').setOrigin(0);
+    //     this.choiceCircle.visible = false;
+    // };
+
+    // createText() {
+    //      this.text = this.add.text(700, 30, 'choice:', {
+    //         font: '40px Boby',
+    //         fill: '#FFFFFF'
+    //     });
+    // };
+
 
 
 }
