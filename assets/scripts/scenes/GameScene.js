@@ -33,6 +33,7 @@ class GameScene extends Phaser.Scene {
         {
             gameObject.emit('gameobjectdown', gameObject);
         });
+
     };
 
     createOneRectangle(x, y) {
@@ -63,27 +64,27 @@ class GameScene extends Phaser.Scene {
         if(this.count === 1){
             if (this.values[4] === 'N') {
                 this.values[4] = 'O';
-                this.add.sprite(this.children.list[5].x, this.children.list[5].y, 'circle').setOrigin(0.5);
+                this.add.sprite(this.children.list.filter((el) => el.id === 4)[0].x, this.children.list.filter((el) => el.id === 4)[0].y, 'circle').setOrigin(0.5);
             }
             else if(this.values[this.k] === 'N') {
                 this.values[this.k] = 'O';
-                this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
+                this.add.sprite(this.children.list.filter((el) => el.id === this.k)[0].x, this.children.list.filter((el) => el.id === this.k)[0].y, 'circle').setOrigin(0.5);
             }
         }
         else {
             if (this.tryZero() !== -1) {
                 this.k = this.tryZero();
                 this.values[this.k] = 'O';
-                this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
+                this.add.sprite(this.children.list.filter((el) => el.id === this.k)[0].x, this.children.list.filter((el) => el.id === this.k)[0].y, 'circle').setOrigin(0.5);
             } else if(this.stopCrest() !== -1){
 
                 this.k = this.stopCrest();
                 this.values[this.k] = 'O';
-                this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
+                this.add.sprite(this.children.list.filter((el) => el.id === this.k)[0].x, this.children.list.filter((el) => el.id === this.k)[0].y, 'circle').setOrigin(0.5);
             } else {
                 this.getRandomPosition();
                 this.values[this.k] = 'O';
-                this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
+                this.add.sprite(this.children.list.filter((el) => el.id === this.k)[0].x, this.children.list.filter((el) => el.id === this.k)[0].y, 'circle').setOrigin(0.5);
             }
 
 
