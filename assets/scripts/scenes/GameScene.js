@@ -11,8 +11,6 @@ class GameScene extends Phaser.Scene {
         this.values = ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'];
         this.createBackground();
         this.createRectangles();
-        // this.createText();
-        // this.createChoiceImage();
     };
 
     createBackground() {
@@ -56,6 +54,7 @@ class GameScene extends Phaser.Scene {
         this.checkWin('CREST');
         if(!this.flag) {
             this.botMove();
+            this.checkWin('CIRCLE');
             this.count++;
         }
     };
@@ -72,39 +71,36 @@ class GameScene extends Phaser.Scene {
             }
         }
         else {
-            // console.log(this.tryZero() + 'zero')
-            //
-             console.log(this.stopCrest() + 'crest')
             if (this.tryZero() !== -1) {
                 this.k = this.tryZero();
-                this.values[this.k] = '0';
+                this.values[this.k] = 'O';
                 this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
             } else if(this.stopCrest() !== -1){
 
                 this.k = this.stopCrest();
-                this.values[this.k] = '0';
+                this.values[this.k] = 'O';
                 this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
             } else {
-
+                this.getRandomPosition();
+                this.values[this.k] = 'O';
+                this.add.sprite(this.children.list[this.k + 1].x, this.children.list[this.k + 1].y, 'circle').setOrigin(0.5);
             }
 
 
         }
-    }
+    };
 
     getRandomPosition() {
-        for(let i = 0; i < this.values.length; i++) {
-            if(this.values[i] === 'N') {
-                return i;
-            }
+        this.k = Phaser.Math.Between(0, 8);
+        if(this.values[this.k] === 'O' || this.values[this.k] === 'X' ) {
+            this.getRandomPosition();
         }
-    }
+    };
 
     stopCrest() {
         for(let i = 0; i < this.values.length; i++) {
             if(this.values[i] === 'N') {
                 this.values[i] = 'X';
-                console.log(this.checkWinBefore())
                 if(this.checkWinBefore()){
                     this.values[i] = 'N'
                     return i;
@@ -114,7 +110,7 @@ class GameScene extends Phaser.Scene {
             }
         }
         return -1;
-    }
+    };
 
     tryZero() {
         for(let i = 0; i < this.values.length; i++) {
@@ -129,7 +125,7 @@ class GameScene extends Phaser.Scene {
             }
         }
         return -1;
-    }
+    };
 
     checkWinBefore() {
         return (this.values[0] === this.values[1] && this.values[0] === this.values[2] && this.values[0] !== 'N' ||
@@ -140,7 +136,7 @@ class GameScene extends Phaser.Scene {
             this.values[2] === this.values[5] && this.values[2] === this.values[8] && this.values[2] !== 'N' ||
             this.values[0] === this.values[4] && this.values[0] === this.values[8] && this.values[0] !== 'N' ||
             this.values[2] === this.values[4] && this.values[2] === this.values[6] && this.values[2] !== 'N')
-    }
+    };
 
     checkWin(player) {
         if(
@@ -170,7 +166,7 @@ class GameScene extends Phaser.Scene {
 
         } else if(!this.values.find((el) => el === "N" )) {
             this.flag = true;
-            this.add.text(600, 525, 'DROW!', {
+            this.add.text(600, 75, 'DRAW!', {
                 font: '60px Boby',
                 fill: '#FFFFFF'
             }).setOrigin(0.5);
@@ -203,20 +199,8 @@ class GameScene extends Phaser.Scene {
           else {
               return this.k;
           }
-     }
+     };
 
-    // createChoiceImage() {
-    //     this.choiceCrest = this.add.sprite(1000, 0, 'crest').setOrigin(0);
-    //     this.choiceCircle = this.add.sprite(1008, 7, 'circle').setOrigin(0);
-    //     this.choiceCircle.visible = false;
-    // };
-
-    // createText() {
-    //      this.text = this.add.text(700, 30, 'choice:', {
-    //         font: '40px Boby',
-    //         fill: '#FFFFFF'
-    //     });
-    // };
 
 
 
