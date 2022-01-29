@@ -67,7 +67,8 @@ class GameScene extends Phaser.Scene {
     };
 
     checkWin(player) {
-        if( this.values[0] === this.values[1] && this.values[0] === this.values[2] && this.values[0] !== 'N' ||
+        if(
+            this.values[0] === this.values[1] && this.values[0] === this.values[2] && this.values[0] !== 'N' ||
             this.values[3] === this.values[4] && this.values[3] === this.values[5] && this.values[3] !== 'N' ||
             this.values[6] === this.values[7] && this.values[6] === this.values[9] && this.values[6] !== 'N' ||
             this.values[0] === this.values[3] && this.values[0] === this.values[6] && this.values[0] !== 'N' ||
@@ -90,10 +91,9 @@ class GameScene extends Phaser.Scene {
                 font: '60px Boby',
                 fill: '#FFFFFF'
             }).setOrigin(0.5);
+
             this.setRestart();
-
-
-        } else if(!this.values.find((el) => el === "N" )){
+        } else if(!this.values.find((el) => el === "N" )) {
 
             this.add.text(600, 525, 'DROW!', {
                 font: '60px Boby',
@@ -110,6 +110,7 @@ class GameScene extends Phaser.Scene {
                 font: '60px Boby',
                 fill: '#FFFFFF'
             }).setOrigin(0.5);
+
             this.setRestart();
         }
     };
@@ -127,7 +128,6 @@ class GameScene extends Phaser.Scene {
                 this.scene.start('Game');
             });
         });
-
     };
 
     createChoiceImage() {
