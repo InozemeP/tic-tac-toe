@@ -1,6 +1,9 @@
 # TIC-TAC-TOE
 ### Описание:
-Немного не обычные крестики-нолики, где Вам предстоит сразиться простив ИИ за победу. Изначально поле 3х3 ![ ](https://github.com/InozemeP/tic-tac-toe/blob/master/assets/sprites/exsample3x3.png) но как только оно заполниться на 70% то расшириться до 5х5 ![ ](https://github.com/InozemeP/tic-tac-toe/blob/master/assets/sprites/exsample5x5.png) 
+Немного не обычные крестики-нолики, где Вам предстоит сразиться простив ИИ за победу. Изначально поле 3х3 
+![ ](https://github.com/InozemeP/tic-tac-toe/blob/master/assets/sprites/exsample3x3.png) 
+но как только оно заполниться на 70% то расшириться до 5х5 
+![ ](https://github.com/InozemeP/tic-tac-toe/blob/master/assets/sprites/exsample5x5.png) 
 ### Условия победы:
 
  - Собрать 3 крестика в ряд для поля 3х3.
