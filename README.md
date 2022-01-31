@@ -2,7 +2,7 @@
 ### Описание:
 Немного не обычные крестики-нолики, где Вам предстоит сразиться простив ИИ за победу. Изначально поле 3х3: 
 ![ ](https://github.com/InozemeP/tic-tac-toe/blob/master/assets/sprites/exsample3x3.png)   
-Но как только оно заполниться на 70% то расшириться до 5х5   
+Но как только оно заполниться на 70% то расшириться до 5х5:   
 ![ ](https://github.com/InozemeP/tic-tac-toe/blob/master/assets/sprites/exsample5x5.png) 
 ### Условия победы:
 
